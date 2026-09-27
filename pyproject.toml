@@ -1,0 +1,18 @@
+[project]
+name = "letter-explainer"
+version = "1.0.0"
+description = "AI that explains confusing official letters in plain language"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["B008"]  # FastAPI uses File(...) / Form(...) in defaults

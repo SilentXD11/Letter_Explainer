@@ -1,0 +1,14 @@
+{
+  "name": "Letter Explainer",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-eng && pip install -r requirements-dev.txt && python -m samples.make_sample_letter",
+  "postAttachCommand": "uvicorn app.main:app --host 0.0.0.0 --port 8000",
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": { "label": "Letter Explainer", "onAutoForward": "openBrowser" }
+  },
+  "secrets": {
+    "ANTHROPIC_API_KEY": { "description": "Optional: enables AI explanations and the vision fallback" },
+    "OPENAI_API_KEY": { "description": "Optional alternative to ANTHROPIC_API_KEY" }
+  }
+}
