@@ -135,10 +135,13 @@ class OfflineProvider:
         if facts["amounts"]:
             summary_parts.append(f"It mentions {', '.join(a['amount'] for a in facts['amounts'][:3])}.")
         if upcoming:
-            summary_parts.append(f"The next deadline is {upcoming[0].date}.")
+            summary_parts.append(f"The next deadline is {_nice_date(upcoming[0].date)}.")
         elif deadlines:
-            summary_parts.append(f"A date in the letter ({deadlines[-1].date}) has already passed, so act soon.")
-        if actions:
+            past = _nice_date(deadlines[-1].date)
+            summary_parts.append(f"A date in the letter ({past}) has already passed, so act soon.")
+        if facts["scam_signs"]:
+            summary_parts.append("It shows signs of a scam, so don't pay or reply until you've checked it's real.")
+        elif actions:
             summary_parts.append("See 'What you need to do' below.")
         if language.lower() != "english":
             summary_parts.append(f"(Offline mode can only explain in English, not {language}.)")
@@ -211,6 +214,11 @@ def _sentences(text: str) -> list[str]:
             if 4 <= n <= 45 and part.rstrip()[-1:] in ".!?":
                 out.append(part.strip())
     return out
+
+
+def _nice_date(iso: str) -> str:
+    d = date.fromisoformat(iso)
+    return f"{d.day} {d:%B %Y}"
 
 
 def _urgency_reason(facts: dict) -> str:

@@ -2,182 +2,165 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Letter Explainer</title>
-<style>
-  :root { --bg:#f6f7f9; --card:#fff; --ink:#1d2330; --muted:#5b6475; --line:#e3e6ec;
-          --accent:#2457d6; --high:#c62828; --med:#b26a00; --low:#2e7d32; }
-  * { box-sizing: border-box; }
-  body { margin:0; font:17px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--ink); }
-  main { max-width:820px; margin:0 auto; padding:24px 16px 64px; }
-  h1 { font-size:1.8rem; margin:0 0 4px; } h2 { font-size:1.15rem; margin:0 0 10px; }
-  p.lead { color:var(--muted); margin:0 0 20px; }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; margin-bottom:16px; }
-  .drop { display:block; border:2px dashed #b9c2d3; border-radius:12px; padding:28px 16px; text-align:center; cursor:pointer; }
-  .drop.drag { border-color:var(--accent); background:#eef3ff; }
-  .row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:14px; }
-  button { font:inherit; padding:10px 18px; border-radius:8px; border:0; background:var(--accent); color:#fff; cursor:pointer; }
-  button.secondary { background:#e8ecf5; color:var(--ink); }
-  button:disabled { opacity:.5; cursor:default; }
-  select, textarea { font:inherit; padding:8px; border:1px solid var(--line); border-radius:8px; }
-  textarea { width:100%; min-height:220px; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:14px; }
-  details summary { cursor:pointer; color:var(--accent); }
-  ul { padding-left:20px; margin:6px 0; }
-  .badge { display:inline-block; padding:2px 10px; border-radius:999px; color:#fff; font-size:.85rem; font-weight:600; }
-  .high{background:var(--high)} .medium{background:var(--med)} .low{background:var(--low)}
-  .warn { background:#fff6e0; border-color:#f0d58c; }
-  .danger { background:#fdecea; border-color:#f3b3ad; }
-  .muted { color:var(--muted); font-size:.9rem; }
-  pre { white-space:pre-wrap; background:#f3f5f9; padding:12px; border-radius:8px; font:15px/1.5 inherit; }
-  .hidden { display:none; }
-  #preview { display:block; margin:12px auto 0; max-width:100%; max-height:260px; border-radius:8px; }
-  #preview.hidden { display:none; }
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Letter Explainer: understand any letter</title>
+<meta name="description" content="Snap a photo of a confusing letter. Get a plain-language explanation, a to-do list with deadlines, and a ready-made reply.">
+<meta name="theme-color" content="#4338ca">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/static/icon-192.png">
+<link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-<main>
-  <h1>📬 Letter Explainer</h1>
-  <p class="lead">Take a photo of a confusing letter (or upload a PDF). We'll explain it in simple words, list what you need to do and by when, and draft a reply.</p>
+<a class="skip" href="#main">Skip to content</a>
 
-  <section class="card">
-    <label class="drop" id="drop">
-      <input id="file" type="file" accept="image/*,application/pdf" capture="environment" hidden>
-      <strong>Tap to take a photo or choose a file</strong><br>
-      <span class="muted">JPG, PNG or PDF, up to 10 MB</span>
-      <img id="preview" class="hidden" alt="Preview of your letter">
-    </label>
-    <div class="row">
-      <label>Explain in:
-        <select id="language">
-          <option>English</option><option>Hindi</option><option>Marathi</option><option>Polish</option>
-          <option>Urdu</option><option>Bengali</option><option>Romanian</option><option>Arabic</option>
-          <option>Spanish</option><option>Portuguese</option><option>Punjabi</option><option>Gujarati</option>
-        </select>
-      </label>
-      <button id="go" disabled>Explain my letter</button>
-      <span id="status" class="muted"></span>
+<header class="topbar">
+  <a class="brand" href="#" aria-label="Letter Explainer home">
+    <img src="/static/icon.svg" alt="" width="32" height="32">
+    <span>Letter<b>Explainer</b></span>
+  </a>
+  <nav class="nav" aria-label="Main">
+    <a href="#" data-nav="home" class="nav-link">Explain</a>
+    <a href="#letters" data-nav="letters" class="nav-link">My letters <span id="navCount" class="count hidden">0</span></a>
+  </nav>
+  <div class="tools">
+    <button class="icon-btn" id="bigText" aria-pressed="false" title="Larger text" aria-label="Larger text">A<span class="plus">+</span></button>
+    <button class="icon-btn" id="themeBtn" title="Switch light / dark" aria-label="Switch light or dark theme">
+      <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1.5 12h3M19.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+  <!-- ============ HOME ============ -->
+  <section id="view-home" class="view">
+    <div class="hero">
+      <h1>Understand any letter <span class="hl">in seconds</span></h1>
+      <p class="lead">Take a photo of a letter from the council, HMRC, the NHS, your bank or your landlord. You'll get it in plain words, with what to do, the deadline, and a reply ready to send.</p>
     </div>
-    <details style="margin-top:14px"><summary>Tips for a readable photo</summary>
-      <ul>
-        <li>Lay the letter flat on a dark table, in daylight.</li>
-        <li>Turn the flash off to avoid glare.</li>
-        <li>Hold the phone straight above the page, with all four corners visible.</li>
-        <li>Tap the screen on the text to focus, then hold still.</li>
-      </ul>
-    </details>
+
+    <div id="upcoming" class="upcoming hidden" aria-live="polite"></div>
+
+    <div class="card composer">
+      <div class="mode-switch" role="tablist" aria-label="How to add your letter">
+        <button role="tab" class="mode active" data-mode="photo" aria-selected="true">📷 Photo or PDF</button>
+        <button role="tab" class="mode" data-mode="text" aria-selected="false">⌨️ Paste text</button>
+      </div>
+
+      <div id="mode-photo">
+        <div id="drop" class="drop" tabindex="0" role="button" aria-label="Add a photo or PDF of your letter">
+          <div id="dropEmpty" class="drop-empty">
+            <div class="drop-art" aria-hidden="true">
+              <svg viewBox="0 0 64 64"><rect x="10" y="14" width="44" height="36" rx="5"/><path d="M10 19l22 15 22-15"/></svg>
+            </div>
+            <p class="drop-title">Drop your letter here</p>
+            <p class="muted">or paste an image with Ctrl + V · JPG, PNG or PDF up to 10 MB</p>
+            <div class="drop-btns">
+              <label class="btn primary">
+                <input id="camera" type="file" accept="image/*" capture="environment" hidden>📷 Take a photo
+              </label>
+              <label class="btn ghost">
+                <input id="file" type="file" accept="image/*,application/pdf" hidden>📁 Choose a file
+              </label>
+            </div>
+          </div>
+          <div id="dropFull" class="drop-full hidden">
+            <img id="preview" alt="Preview of your letter">
+            <div id="pdfBadge" class="pdf-badge hidden">PDF</div>
+            <div class="file-meta">
+              <strong id="fileName"></strong>
+              <span id="fileSize" class="muted"></span>
+              <button class="link" id="clearFile" type="button">Choose a different file</button>
+            </div>
+          </div>
+        </div>
+        <details class="tips">
+          <summary>💡 Tips for a photo we can read</summary>
+          <div class="tip-grid">
+            <div><span>🪟</span>Use daylight and turn the flash <b>off</b></div>
+            <div><span>🟫</span>Lay the letter flat on a dark table</div>
+            <div><span>📐</span>Show all four corners of the page</div>
+            <div><span>🎯</span>Tap the text to focus, then hold still</div>
+          </div>
+        </details>
+      </div>
+
+      <div id="mode-text" class="hidden">
+        <label for="pasteText" class="sr-only">Letter text</label>
+        <textarea id="pasteText" placeholder="Paste or type the text of your letter here…" rows="9"></textarea>
+      </div>
+
+      <div class="go-row">
+        <label class="lang">
+          <span>Explain in</span>
+          <select id="language"></select>
+        </label>
+        <button id="go" class="btn primary big" disabled>Explain my letter <span aria-hidden="true">→</span></button>
+      </div>
+
+      <div class="examples">
+        <span class="muted">No letter handy? Try one:</span>
+        <div id="exampleChips" class="chips"></div>
+      </div>
+    </div>
+
+    <div class="how">
+      <div class="how-step"><div class="n">1</div><h3>Snap it</h3><p>Take a photo. We straighten, sharpen and clean it up for you.</p></div>
+      <div class="how-step"><div class="n">2</div><h3>Get it in plain words</h3><p>What it means, what you need to do and by when, in your language.</p></div>
+      <div class="how-step"><div class="n">3</div><h3>Stay on top of it</h3><p>Tick things off, set calendar reminders, and send the reply we've drafted for you.</p></div>
+    </div>
+    <p class="privacy">🔒 Your letters are saved only on this device. You can delete them any time.</p>
   </section>
 
-  <section id="warnings" class="card warn hidden"></section>
-  <section id="result" class="hidden"></section>
+  <!-- ============ PROCESSING ============ -->
+  <section id="view-working" class="view hidden" aria-live="polite">
+    <div class="card working">
+      <div class="scan" aria-hidden="true"><div class="page"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="beam"></div></div>
+      <h2 id="workingTitle">Reading your letter…</h2>
+      <ol id="steps" class="steps"></ol>
+      <p class="muted small">This usually takes 5 to 20 seconds.</p>
+    </div>
+  </section>
 
-  <section id="textCard" class="card hidden">
-    <h2>Text we read from your letter</h2>
-    <p class="muted" id="method"></p>
-    <p class="muted">If anything was read wrongly, correct it here and press "Explain again".</p>
-    <textarea id="text"></textarea>
-    <div class="row"><button id="again" class="secondary">Explain again</button></div>
+  <!-- ============ RESULT ============ -->
+  <section id="view-result" class="view hidden"></section>
+
+  <!-- ============ MY LETTERS ============ -->
+  <section id="view-letters" class="view hidden">
+    <div class="letters-head">
+      <div>
+        <h1>My letters</h1>
+        <p id="lettersStats" class="muted"></p>
+      </div>
+      <a href="#" class="btn primary">+ New letter</a>
+    </div>
+    <div class="letters-tools">
+      <input id="search" type="search" placeholder="Search letters…" aria-label="Search letters">
+      <div class="chips" role="group" aria-label="Filter">
+        <button class="chip active" data-filter="all">All</button>
+        <button class="chip" data-filter="todo">To do</button>
+        <button class="chip" data-filter="done">Done</button>
+        <button class="chip" data-filter="high">Urgent</button>
+      </div>
+    </div>
+    <div id="lettersList" class="letters-list"></div>
+    <div id="lettersEmpty" class="empty hidden">
+      <div class="empty-art" aria-hidden="true">📭</div>
+      <h2>No letters yet</h2>
+      <p class="muted">Letters you explain are saved here, so you can track deadlines and tick off what you've done.</p>
+      <a href="#" class="btn primary">Explain your first letter</a>
+    </div>
   </section>
 </main>
 
-<script>
-const $ = (id) => document.getElementById(id);
-const fileInput = $("file"), drop = $("drop");
-let chosen = null;
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<div id="confetti" class="confetti" aria-hidden="true"></div>
 
-function el(tag, text, cls) { const e = document.createElement(tag); if (text) e.textContent = text; if (cls) e.className = cls; return e; }
-function setStatus(msg) { $("status").textContent = msg; }
+<footer class="foot">
+  <p>Letter Explainer gives automated explanations, not legal or financial advice. If you're unsure, contact the sender or <a href="https://www.citizensadvice.org.uk/" target="_blank" rel="noopener">Citizens Advice</a>.</p>
+</footer>
 
-function choose(file) {
-  chosen = file; $("go").disabled = !file;
-  const img = $("preview");
-  if (file && file.type.startsWith("image/")) { img.src = URL.createObjectURL(file); img.classList.remove("hidden"); }
-  else img.classList.add("hidden");
-  setStatus(file ? file.name : "");
-}
-fileInput.addEventListener("change", () => choose(fileInput.files[0]));
-["dragover","dragenter"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("drag"); }));
-["dragleave","drop"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("drag"); }));
-drop.addEventListener("drop", e => { if (e.dataTransfer.files[0]) choose(e.dataTransfer.files[0]); });
-
-async function call(url, options) {
-  setStatus("Reading your letter… this can take up to 30 seconds.");
-  $("go").disabled = true; $("again").disabled = true;
-  try {
-    const res = await fetch(url, options);
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.detail?.[0]?.msg || data.detail || "Something went wrong");
-    render(data); setStatus("");
-  } catch (err) { setStatus("⚠️ " + err.message); }
-  finally { $("go").disabled = !chosen; $("again").disabled = false; }
-}
-
-$("go").addEventListener("click", () => {
-  const form = new FormData(); form.append("file", chosen); form.append("language", $("language").value);
-  call("/api/explain", { method: "POST", body: form });
-});
-$("again").addEventListener("click", () => {
-  call("/api/explain-text", { method: "POST", headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text: $("text").value, language: $("language").value }) });
-});
-
-function list(title, items, fmt) {
-  if (!items || !items.length) return null;
-  const card = el("section", null, "card"); card.append(el("h2", title));
-  const ul = el("ul"); items.forEach(i => ul.append(el("li", fmt(i)))); card.append(ul); return card;
-}
-
-function render(data) {
-  const x = data.extraction, e = data.explanation;
-  // Warnings / retake advice
-  const w = $("warnings"); w.replaceChildren();
-  const tips = [...(x.warnings || [])];
-  if (x.needs_retake) tips.push(...(x.retake_tips || []).filter(t => !tips.includes(t)));
-  if (tips.length) {
-    w.append(el("h2", x.needs_retake ? "📷 The photo is hard to read" : "Please note"));
-    const ul = el("ul"); tips.forEach(t => ul.append(el("li", t))); w.append(ul);
-    w.classList.remove("hidden");
-  } else w.classList.add("hidden");
-
-  // Extracted text (editable)
-  if (x.source !== "text") {
-    $("text").value = x.text;
-    const conf = x.confidence != null ? ` · confidence ${Math.round(x.confidence)}%` : "";
-    $("method").textContent = `Read using: ${x.method.replace(/_/g, " ")}${conf}`;
-  }
-  $("textCard").classList.remove("hidden");
-
-  // Explanation
-  const r = $("result"); r.replaceChildren();
-  if (!e) { r.classList.add("hidden"); return; }
-  r.classList.remove("hidden");
-
-  if (e.scam_warning) { const s = el("section", null, "card danger"); s.append(el("h2", "⚠️ Possible scam"), el("p", e.scam_warning)); r.append(s); }
-
-  const top = el("section", null, "card");
-  const h = el("h2", "What this letter is about ");
-  h.append(el("span", `${e.urgency} urgency`, `badge ${e.urgency}`));
-  top.append(h, el("p", e.summary));
-  if (e.urgency_reason) top.append(el("p", e.urgency_reason, "muted"));
-  if (e.sender) top.append(el("p", `From: ${e.sender}`, "muted"));
-  r.append(top);
-
-  [list("✅ What you need to do", e.actions, a => a.deadline ? `${a.action} — by ${a.deadline}` : a.action),
-   list("📅 Important dates", e.deadlines, d => `${d.date}: ${d.description}`),
-   list("💷 Money mentioned", e.amounts, a => a),
-   list("🔢 Reference numbers (keep these handy)", e.reference_numbers, a => a),
-   list("💡 Key points", e.key_points, a => a),
-   list("📖 Words explained", e.glossary, g => `${g.term}: ${g.meaning}`)]
-   .forEach(c => c && r.append(c));
-
-  if (e.draft_reply) {
-    const c = el("section", null, "card"); c.append(el("h2", "✉️ Draft reply"), el("pre", e.draft_reply));
-    const b = el("button", "Copy reply", "secondary");
-    b.onclick = () => navigator.clipboard.writeText(e.draft_reply).then(() => b.textContent = "Copied ✓");
-    c.append(b); r.append(c);
-  }
-  r.append(el("p", `${e.disclaimer} (Explained by: ${data.provider})`, "muted"));
-  r.scrollIntoView({ behavior: "smooth" });
-}
-</script>
+<script src="/static/app.js" defer></script>
 </body>
 </html>

@@ -50,6 +50,17 @@ def index() -> FileResponse:
     return FileResponse(STATIC / "index.html")
 
 
+@app.get("/sw.js", include_in_schema=False)
+def service_worker() -> FileResponse:
+    # Served from the root so it can control the whole site (installable app).
+    return FileResponse(STATIC / "sw.js", media_type="application/javascript", headers={"Cache-Control": "no-cache"})
+
+
+@app.get("/manifest.webmanifest", include_in_schema=False)
+def manifest() -> FileResponse:
+    return FileResponse(STATIC / "manifest.webmanifest", media_type="application/manifest+json")
+
+
 @app.get("/health")
 def health(request: Request) -> dict:
     try:

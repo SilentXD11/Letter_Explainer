@@ -25,6 +25,15 @@ def test_homepage_served():
     assert "Letter Explainer" in r.text
 
 
+def test_app_assets_served():
+    for path in ("/static/app.js", "/static/styles.css", "/static/icon.svg", "/static/icon-192.png"):
+        assert client.get(path).status_code == 200, path
+    sw = client.get("/sw.js")
+    assert sw.status_code == 200 and "javascript" in sw.headers["content-type"]
+    manifest = client.get("/manifest.webmanifest")
+    assert manifest.status_code == 200 and manifest.json()["name"] == "Letter Explainer"
+
+
 def test_explain_photo(hard_photo):
     r = client.post("/api/explain", files={"file": ("letter.jpg", to_jpeg(hard_photo), "image/jpeg")})
     assert r.status_code == 200, r.text

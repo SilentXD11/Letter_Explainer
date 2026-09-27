@@ -16,6 +16,20 @@ Letters from HMRC, councils, the NHS, DWP, energy companies, landlords and court
 
 Built with **Python · FastAPI · OpenCV · Tesseract OCR · Claude / OpenAI (optional)**.
 
+### The app people come back to
+| Feature | Why it matters |
+|---|---|
+| 📬 **My letters** inbox | Every explained letter is saved (on the device only), searchable and filterable |
+| ⏰ **Deadline countdowns** | "8 days left" on the home screen, so nothing gets missed |
+| ✅ **To-do checklist** | Actions become tickable tasks with a progress bar (and a small celebration when everything's done) |
+| 📅 **Add to calendar** | One tap downloads an `.ics` file with a reminder 2 days before each deadline |
+| 🔊 **Listen** | Reads the explanation aloud in the chosen language, for low-vision or low-literacy users |
+| 🚨 **Scam mode** | Suspicious letters get a warning, and the to-do list is hidden so nobody "pays the gift card" |
+| ✍️ **Editable reply** | Draft reply is saved as you type, with Copy and Open-in-email buttons |
+| 🧪 **Try an example** | First-time visitors see results instantly without needing a letter to hand |
+| 🌗 **Dark mode · A+ large text** | Comfortable for everyone; preferences are remembered |
+| 📱 **Installable app (PWA)** | "Add to Home screen" on a phone; opens offline with your saved letters |
+
 ---
 
 ## 1. The big problem: "What if the text in the photo isn't visible?"
@@ -81,7 +95,7 @@ letter-explainer/
 │   ├── llm.py             # Claude / OpenAI / offline providers + prompt
 │   ├── schemas.py         # Pydantic models (auto docs at /docs)
 │   ├── config.py          # Settings from environment / .env
-│   └── static/index.html  # Mobile-friendly web page (camera upload)
+│   └── static/            # Web app: index.html, app.js, styles.css, PWA (sw.js, manifest, icons)
 ├── samples/make_sample_letter.py  # Generates realistic test letters & bad photos
 ├── tests/                 # 32 automated tests (pytest)
 ├── .github/workflows/ci.yml       # GitHub Actions: lint + tests + Docker check
