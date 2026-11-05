@@ -97,7 +97,7 @@ letter-explainer/
 │   ├── config.py          # Settings from environment / .env
 │   └── static/            # Web app: index.html, app.js, styles.css, PWA (sw.js, manifest, icons)
 ├── samples/make_sample_letter.py  # Generates realistic test letters & bad photos
-├── tests/                 # 32 automated tests (pytest)
+├── tests/                 # 33 automated tests (pytest)
 ├── .github/workflows/ci.yml       # GitHub Actions: lint + tests + Docker check
 ├── Dockerfile
 ├── requirements.txt / requirements-dev.txt
@@ -143,7 +143,7 @@ With **no key** the app still works in **offline mode**, using rule-based explan
 ```bash
 python -m pytest -v
 ```
-You should see `32 passed`.
+You should see `33 passed`.
 
 ### Step 6: Start the app
 ```bash
@@ -186,7 +186,7 @@ When asked for a password, use a **Personal Access Token** (GitHub → Settings 
 1. Open your repo on GitHub → **Actions** tab.
 2. You'll see the **CI** workflow running. It:
    - installs Tesseract on a fresh Ubuntu machine,
-   - runs `ruff` (code style) and all 32 tests on Python 3.11 and 3.12,
+   - runs `ruff` (code style) and all 33 tests on Python 3.11 and 3.12,
    - builds the Docker image, starts it, and checks `/health`.
 3. A **green ✓** means everything works. Click a run to see the logs for each step.
 4. Under **Artifacts** at the bottom of a run, download `sample-letters` to see the generated test photos.
